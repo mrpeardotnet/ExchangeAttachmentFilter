@@ -23,4 +23,4 @@ needs.
 ## Logging
 EAFTransportAgent can be configured to log useful information about messages and attachments passing 
 your Exchange server. These logs are stored as human readable text files so you can easily and immediately 
-understand what kind of messages and how they has been processed by your server use it to fine tune your configuration.
+understand what kind of messages and how they has been processed by your Exchange server.

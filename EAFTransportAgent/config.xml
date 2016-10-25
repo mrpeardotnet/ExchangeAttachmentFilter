@@ -1,0 +1,159 @@
+﻿<config>
+  <!--
+    <attachments> section
+    =====================
+    You can whitelist, remove or reject specific attachment file names here.
+    Use wildcard syntax (* and ?, such as *.exe, virus*.*, ...).
+    If there is both whitelist and remove/reject match, then whitelist has precedence (so it is possible to whitelist remove/reject exceptions).
+    If there is both remove and reject match, then reject has precedence.
+    If there is any rejected attachment found, then the whole message is rejected (discarded, deleted, no NDR is sent!).
+    
+    Default list below contains potentially dangerous file extensions, you can modify it to fit your needs. 
+    You can simply move <attachment> element between whitelist, remove and reject sections.
+  -->
+  <attachments>
+    <whitelist>
+      <attachment>*.txt</attachment>
+    </whitelist>
+    <remove>
+      <!-- Programs -->
+      <attachment>*.exe</attachment>
+      <attachment>*.pif</attachment>
+      <attachment>*.application</attachment>
+      <attachment>*.gadget</attachment>
+      <attachment>*.msi</attachment>
+      <attachment>*.msp</attachment>
+      <attachment>*.com</attachment>
+      <attachment>*.scr</attachment>
+      <attachment>*.hta</attachment>
+      <attachment>*.cpl</attachment>
+      <attachment>*.msc</attachment>
+      <attachment>*.jar</attachment>
+      <!-- Scripts -->
+      <attachment>*.bat</attachment>
+      <attachment>*.cmd</attachment>
+      <attachment>*.vb</attachment>
+      <attachment>*.vbs</attachment>
+      <attachment>*.vbe</attachment>
+      <attachment>*.ps1</attachment>
+      <attachment>*.ps2</attachment>
+      <attachment>*.ps1xml</attachment>
+      <attachment>*.ps2xml</attachment>
+      <attachment>*.psc1</attachment>
+      <attachment>*.psc2</attachment>
+      <attachment>*.msh</attachment>
+      <attachment>*.msh1</attachment>
+      <attachment>*.msh2</attachment>
+      <attachment>*.mshxml</attachment>
+      <attachment>*.msh1xml</attachment>
+      <attachment>*.msh2xml</attachment>
+      <!-- Shortcuts -->
+      <attachment>*.scf</attachment>
+      <attachment>*.lnk</attachment>
+      <attachment>*.inf</attachment>
+      <!-- Archives (if we can't see what is inside, just do not trust it) -->
+      <attachment>*.bzip</attachment>
+      <attachment>*.bzip2</attachment>
+      <attachment>*.bz2</attachment>
+      <attachment>*.rar</attachment>
+      <attachment>*.dzip</attachment>
+      <!-- Others -->
+      <attachment>*.reg</attachment>
+      <!-- Office documents including macros -->
+      <attachment>*.docm</attachment>
+      <attachment>*.dotm</attachment>
+      <attachment>*.xlsm</attachment>
+      <attachment>*.xltm</attachment>
+      <attachment>*.xlam</attachment>
+      <attachment>*.pptm</attachment>
+      <attachment>*.potm</attachment>
+      <attachment>*.ppam</attachment>
+      <attachment>*.ppsm</attachment>
+      <attachment>*.sldm</attachment>
+    </remove>
+    <reject>
+      <!-- Scripts -->
+      <attachment>*.js</attachment>
+      <attachment>*.jse</attachment>
+      <attachment>*.ws</attachment>
+      <attachment>*.wsf</attachment>
+      <attachment>*.wsc</attachment>
+      <attachment>*.wsh</attachment>
+    </reject>
+  </attachments>
+
+  <!--
+    <parameters> section
+    ====================
+ -->
+  <parameters>
+    <!-- 
+      scanOpenXmlDocuments
+      scan OpenXml documents (e.g. Office 2007 and newer) and try to find macro enabled files
+      0 = no, 1 = yes 
+      -->
+    <parameter name="scanOpenXmlDocuments">1</parameter>
+
+    <!-- 
+      scanArchives
+      scan (ZIP) archives
+      0 = no, 1 = yes 
+      -->
+    <parameter name="scanArchives">1</parameter>
+
+    <!-- 
+      dsnStripOriginalMessage
+      strips (removes without any further notification) the original message that is ususally included in the delivery status notification
+      0 = no, 1 = yes 
+      -->
+    <parameter name="dsnStripOriginalMessage">0</parameter>
+
+    <!-- 
+      logRejectedOrRemoved
+      log info about removed attachments and rejected messages
+      -->
+    <parameter name="logRejectedOrRemoved">1</parameter>
+
+    <!-- 
+      logAccepted
+      log info about accepted attachments (use as verbose mode for testing)
+      -->
+    <parameter name="logAccepted">0</parameter>
+
+    <!-- 
+      removedAttachmentPrefix
+      filename prefix when attachment is removed and replaced with new attachment 
+    -->
+    <parameter name="removedAttachmentPrefix">removed_</parameter>
+
+    <!-- 
+      removedAttachmentNewContent
+      text appended to the new txt attachment (replaces removed attachment)
+      Use "\r\n" pattern (without qoutes) to force new line.
+      -->
+    <parameter name="removedAttachmentNewContent">This attachment was removed for security reasons.\r\nAaa</parameter>
+
+  </parameters>
+
+  <!-- 
+    <senders> section
+    =================
+    Uncomment this section below if you want to whitelist specific senders (no filtering will be applied)
+    
+    Use *@domain.com to accept everything from single domain or you can even play with
+    wildcard syntax the same way as with filename wildcards (shares the same syntax)
+    
+    But do not forget that attackers often spoof sender's address so be careful 
+    when whitelisting by sender or even by whole domain(s).
+  -->
+  <!--
+  <senders>
+    <whitelist>
+      <sender>user@example.com</sender>
+      <sender>user2@example.com</sender>
+      <sender>*@domain.com</sender>
+    </whitelist>
+  </senders>
+  -->
+
+</config>

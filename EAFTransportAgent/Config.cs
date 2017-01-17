@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MrPear.Net.ExchangeAttachmentFilter
 {
@@ -14,9 +13,12 @@ namespace MrPear.Net.ExchangeAttachmentFilter
         public const string ConfigDirectoryName = "Logs";
 
         // default values for parameters not found in config
+        public const int MailSizeThresholdDefault = 1024;
         public const string RemovedAttachmentPrefixDefault = "removed_";
         public const string RemovedAttachmentNewContentDefault = "This attachment was removed for security reasons.";
         public const bool ScanArchivesDefault = true;
+        public const bool MailboxMethodSafeDefault = true;
+        public const bool RemoveHtmlAttachmentsWithScriptsDefault = false;
         public const bool ScanOpenXmlDocumentsDefault = true;
         public const bool LogRejectedOrRemovedDefault = true;
         public const bool LogAcceptedDefault = false;
@@ -46,5 +48,13 @@ namespace MrPear.Net.ExchangeAttachmentFilter
             "*.ppsx",
             "*.sldx",
         };
+
+        // hardcoded list of html file types
+        public static readonly IEnumerable<string> HtmlFileTypes = new[]
+        {
+            "*.htm",
+            "*.html",
+        };
+
     }
 }

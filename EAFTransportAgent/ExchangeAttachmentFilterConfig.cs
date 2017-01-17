@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -18,7 +17,7 @@ namespace MrPear.Net.ExchangeAttachmentFilter
     public class ExchangeAttachmentFilterConfig
     {
         private readonly string _configDirectory;
-        private int _configIsReloading = 0;
+        private int _configIsReloading;
 
         public ExchangeAttachmentFilterConfig()
         {
@@ -92,7 +91,10 @@ namespace MrPear.Net.ExchangeAttachmentFilter
                 var parameters = root.Element("parameters");
                 if (parameters == null)
                     return;
+                MailSizeThreshold = GetParameterValueAsInt(parameters, "mailSizeThreshold", Config.MailSizeThresholdDefault);
                 ScanArchives = GetParameterValueAsBool(parameters, "scanArchives", Config.ScanArchivesDefault);
+                MailboxMethodSafe = GetParameterValueAsBool(parameters, "mailboxMethodSafe", Config.MailboxMethodSafeDefault);
+                RemoveHtmlAttachmentsWithScripts = GetParameterValueAsBool(parameters, "removeHtmlAttachmentsWithScripts", Config.RemoveHtmlAttachmentsWithScriptsDefault);
                 DsnStripOriginalMessage = GetParameterValueAsBool(parameters, "dsnStripOriginalMessage",
                     Config.DsnStripOriginalMessageDefault);
                 LogRejectedOrRemoved = GetParameterValueAsBool(parameters, "logRejectedOrRemoved",
@@ -142,8 +144,34 @@ namespace MrPear.Net.ExchangeAttachmentFilter
             return GetParameterValue(parametersElement, parameterName, defaultValue ? "1" : "0").Trim().Equals("1");
         }
 
+        /// <summary>
+        /// Gets XML configuration parameter value as integer.
+        /// </summary>
+        /// <param name="parametersElement">Root container element with 'parameter' nodes.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="defaultValue">Default value returned if the parameter name is not found.</param>
+        /// <returns></returns>
+        private static int GetParameterValueAsInt(XContainer parametersElement, string parameterName, int defaultValue)
+        {
+            var value = GetParameterValue(parametersElement, parameterName, null);
+            if (value == null)
+                return defaultValue;
+            try
+            {
+                return Int32.Parse(value);
+            }
+            catch (Exception)
+            {
+                SysLog.Log($"Config ERROR: Cannot parse '{parameterName}' value '{value}' as integer value. Using default '{defaultValue}'");
+                return defaultValue;
+            }
+        }
+
         // parameters
+        public int MailSizeThreshold { get; private set; } = Config.MailSizeThresholdDefault;
         public bool ScanArchives { get; private set; } = Config.ScanArchivesDefault;
+        public bool MailboxMethodSafe { get; private set; } = Config.MailboxMethodSafeDefault;
+        public bool RemoveHtmlAttachmentsWithScripts { get; private set; } = Config.RemoveHtmlAttachmentsWithScriptsDefault;
         public bool ScanOpenXmlDocuments { get; private set; } = Config.ScanOpenXmlDocumentsDefault;
         public bool DsnStripOriginalMessage { get; private set; } = Config.DsnStripOriginalMessageDefault;
         public bool LogRejectedOrRemoved { get; private set; } = Config.LogRejectedOrRemovedDefault;

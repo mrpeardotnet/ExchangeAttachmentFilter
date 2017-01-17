@@ -88,41 +88,75 @@
  -->
   <parameters>
     <!-- 
+      mailSizeThreshold
+      process email messages with size lower than specified threshold only
+      default is 1024 (1024kB = 1MB), 0 = no limit
+      
+      If email size is greater than this value, no further checks are processed.
+      
+      Malicious software is usually small in size (only few kB) so you can lower this value to get better 
+      performance and to get less false positive detections.
+      
+      The best value depends on actual malware trends and you should read the logs and experiment a bit.
+      
+      Do not increase this value too much unless you REALLY KNOW WHAT are you doing and WHY are you doing it! 
+      We do in-memory operations with some attachemnts so large attachments may bring your server down to the knees!!!
+      -->
+    <parameter name="mailSizeThreshold">1024</parameter>
+
+    <!-- 
       scanOpenXmlDocuments
-      scan OpenXml documents (e.g. Office 2007 and newer) and try to find macro enabled files
-      0 = no, 1 = yes 
+      scan OpenXml documents (e.g. Office 2007 and newer) and try to find macro enabled ones
+      0 = no, 1 = yes (default)
       -->
     <parameter name="scanOpenXmlDocuments">1</parameter>
 
     <!-- 
       scanArchives
       scan (ZIP) archives
-      0 = no, 1 = yes 
+      0 = no, 1 = yes (default)
       -->
     <parameter name="scanArchives">1</parameter>
 
     <!-- 
+      mailboxMethodSafe
+      treat mailbox inbound delivery mothed as safe (this inbound mehtod is used when email is originating in your organization)
+      0 = no, 1 = yes (default)
+      -->
+    <parameter name="mailboxMethodSafe">1</parameter>
+
+    <!-- 
       dsnStripOriginalMessage
       strips (removes without any further notification) the original message that is ususally included in the delivery status notification
-      0 = no, 1 = yes 
+      0 = no (default), 1 = yes 
       -->
     <parameter name="dsnStripOriginalMessage">0</parameter>
 
     <!-- 
+      removeHtmlAttachmentsWithScripts
+      detect and remove HTML attachments containing script tags
+      0 = no (default), 1 = yes 
+      -->
+    <parameter name="removeHtmlAttachmentsWithScripts">0</parameter>
+
+    <!-- 
       logRejectedOrRemoved
       log info about removed attachments and rejected messages
+      0 = no, 1 = yes (default)
       -->
     <parameter name="logRejectedOrRemoved">1</parameter>
 
     <!-- 
       logAccepted
       log info about accepted attachments (use as verbose mode for testing)
-      -->
+      0 = no (default), 1 = yes
+    -->
     <parameter name="logAccepted">0</parameter>
 
     <!-- 
       removedAttachmentPrefix
       filename prefix when attachment is removed and replaced with new attachment 
+      default = removed_
     -->
     <parameter name="removedAttachmentPrefix">removed_</parameter>
 
@@ -131,7 +165,7 @@
       text appended to the new txt attachment (replaces removed attachment)
       Use "\r\n" pattern (without qoutes) to force new line.
       -->
-    <parameter name="removedAttachmentNewContent">This attachment was removed for security reasons.\r\nAaa</parameter>
+    <parameter name="removedAttachmentNewContent">This attachment was removed for security reasons.\r\n</parameter>
 
   </parameters>
 
